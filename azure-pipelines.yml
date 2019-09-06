@@ -12,10 +12,10 @@ steps:
 
 - bash: |
    cat > .env << EOF
-   PRODUCT_SERVICE_BASE_URL=
-   INVENTORY_SERVICE_BASE_URL=
+   PRODUCT_SERVICE_BASE_URL=https://cgn10niopheyinventory.azurewebsites.net/
+   INVENTORY_SERVICE_BASE_URL=https://cgn10niopheyproduct.azurewebsites.net/
    EOF
-   displayName: 'Set up FB Connection'
+   displayName: 'Set up DB Connection'
 
 - bash: |
     npm run build
