@@ -20,7 +20,7 @@ steps:
 - bash: |
     npm run build
     ls 
-  displayName: 'Buidl App'
+  displayName: 'Build App'
 
 - task: ArchiveFiles@2
   displayName: 'Archive dist'
