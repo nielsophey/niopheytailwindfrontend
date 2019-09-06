@@ -1,8 +1,3 @@
-# Node.js
-# Build a general Node.js project with npm.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
 - master
 
@@ -10,12 +5,34 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: NodeTool@0
+- task: Npm@1
+  displayName: 'npm install'
   inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+    verbose: false
 
-- script: |
-    npm install
+- bash: |
+   cat > .env << EOF
+   PRODUCT_SERVICE_BASE_URL=
+   INVENTORY_SERVICE_BASE_URL=
+   EOF
+   displayName: 'Set up FB Connection'
+
+- bash: |
     npm run build
-  displayName: 'npm install and build'
+    ls 
+  displayName: 'Buidl App'
+
+- task: ArchiveFiles@2
+  displayName: 'Archive dist'
+  inputs:
+    rootFolderOrFile: dist
+    includeRootFolder: false
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    Contents: '**/*.zip'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish artifatcs: drop'
